@@ -43,6 +43,9 @@ import Compliance from './pages/legal/Compliance';
 // Search
 import SearchResults from './pages/SearchResults';
 
+// Feedback
+import Feedback from './pages/Feedback';
+
 function App() {
   return (
     <UserProvider>
@@ -58,6 +61,9 @@ function App() {
             
             {/* Search Results */}
             <Route path="search" element={<SearchResults />} />
+            
+            {/* Feedback */}
+            <Route path="feedback" element={<Feedback />} />
             
             {/* Customer Routes */}
             <Route path="customer/home" element={<CustomerHome />} />

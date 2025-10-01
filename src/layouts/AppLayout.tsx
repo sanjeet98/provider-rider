@@ -44,6 +44,7 @@ import {
   LocalShipping,
   BarChart,
   Description,
+  Feedback as FeedbackIcon,
 } from '@mui/icons-material';
 import { useUser, UserRole } from '../context/UserContext';
 import ConsentBanner from '../components/ConsentBanner';
@@ -331,6 +332,21 @@ function AppLayout() {
               )}
             </Box>
 
+            {/* Feedback Button */}
+            <Tooltip title="Feedback">
+              <Button
+                onClick={() => navigate('/feedback')}
+                sx={{
+                  color: 'white',
+                  display: { xs: 'none', md: 'flex' },
+                  mr: 1,
+                }}
+                startIcon={<FeedbackIcon />}
+              >
+                Feedback
+              </Button>
+            </Tooltip>
+
             {/* Notifications */}
             <Tooltip title="Notifications">
               <IconButton color="inherit" sx={{ mr: 1 }}>
@@ -456,6 +472,19 @@ function AppLayout() {
               </ListItem>
             ))}
           </List>
+          <Divider />
+          {/* Common Links */}
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton
+                selected={location.pathname === '/feedback'}
+                onClick={() => handleNavigation('/feedback')}
+              >
+                <ListItemIcon><FeedbackIcon /></ListItemIcon>
+                <ListItemText primary="Feedback" />
+              </ListItemButton>
+            </ListItem>
+          </List>
         </Box>
       </Drawer>
 
@@ -506,6 +535,15 @@ function AppLayout() {
               onClick={() => navigate('/compliance')}
             >
               GDPR/POPIA Compliance
+            </Typography>
+            {' | '}
+            <Typography
+              component="span"
+              variant="body2"
+              sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}
+              onClick={() => navigate('/feedback')}
+            >
+              Feedback
             </Typography>
           </Typography>
         </Container>
