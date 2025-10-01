@@ -24,6 +24,7 @@ import {
   Badge,
   Snackbar,
   Alert,
+  Paper,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -87,6 +88,8 @@ function AppLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -124,8 +127,63 @@ function AppLayout() {
 
   const handleSearch = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('Searching for:', searchQuery);
-    setNotificationOpen(true);
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery(''); // Clear search after navigating
+      setShowSuggestions(false);
+    }
+  };
+
+  // Search suggestions based on role
+  const allSuggestions: Record<UserRole, string[]> = {
+    customer: [
+      'service request', 'plumbing', 'electrical', 'hvac', 'repair',
+      'payment', 'invoice', 'wallet', 'balance',
+      'claims', 'insurance', 'submit claim',
+      'reports', 'history', 'profile', 'support', 'help', 'faq'
+    ],
+    provider: [
+      'jobs', 'active jobs', 'pending jobs',
+      'calendar', 'schedule', 'appointments',
+      'earnings', 'payments', 'payout',
+      'profile', 'credentials', 'support'
+    ],
+    admin: [
+      'dispatch', 'tracking', 'map', 'real-time',
+      'users', 'user management', 'providers', 'customers',
+      'reports', 'analytics', 'statistics',
+      'dashboard', 'overview'
+    ],
+    insurance: [
+      'claims', 'pending claims', 'approve', 'reject',
+      'analytics', 'insights', 'trends',
+      'support', 'profile', 'company'
+    ],
+  };
+
+  // Update suggestions as user types
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    
+    if (value.trim().length > 0) {
+      const filtered = allSuggestions[role]
+        .filter(suggestion => 
+          suggestion.toLowerCase().includes(value.toLowerCase())
+        )
+        .slice(0, 5); // Show max 5 suggestions
+      
+      setSearchSuggestions(filtered);
+      setShowSuggestions(filtered.length > 0);
+    } else {
+      setSearchSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setSearchQuery(suggestion);
+    navigate(`/search?q=${encodeURIComponent(suggestion)}`);
+    setShowSuggestions(false);
   };
 
   const menuItems = roleMenuItems[role];
@@ -197,37 +255,80 @@ function AppLayout() {
               ))}
             </Box>
 
-            {/* Search Bar */}
+            {/* Search Bar with Suggestions */}
             <Box
-              component="form"
-              onSubmit={handleSearch}
-              sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' }, mr: 2 }}
+              sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' }, mr: 2, position: 'relative' }}
             >
-              <TextField
-                size="small"
-                placeholder="Global Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon sx={{ color: 'white' }} />
-                    </InputAdornment>
-                  ),
-                  sx: {
-                    color: 'white',
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'rgba(255,255,255,0.3)',
+              <Box
+                component="form"
+                onSubmit={handleSearch}
+              >
+                <TextField
+                  size="small"
+                  placeholder="Global Search..."
+                  value={searchQuery}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                  onFocus={() => {
+                    if (searchQuery.trim().length > 0 && searchSuggestions.length > 0) {
+                      setShowSuggestions(true);
+                    }
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon sx={{ color: 'white' }} />
+                      </InputAdornment>
+                    ),
+                    sx: {
+                      color: 'white',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'rgba(255,255,255,0.3)',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'rgba(255,255,255,0.5)',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white',
+                      },
                     },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'rgba(255,255,255,0.5)',
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'white',
-                    },
-                  },
-                }}
-              />
+                  }}
+                />
+              </Box>
+              
+              {/* Suggestions Dropdown */}
+              {showSuggestions && searchSuggestions.length > 0 && (
+                <Paper
+                  sx={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: 0,
+                    right: 0,
+                    mt: 0.5,
+                    zIndex: 1300,
+                    maxHeight: 300,
+                    overflow: 'auto',
+                  }}
+                >
+                  <List dense>
+                    {searchSuggestions.map((suggestion, index) => (
+                      <ListItem
+                        key={index}
+                        disablePadding
+                      >
+                        <ListItemButton
+                          onClick={() => handleSuggestionClick(suggestion)}
+                        >
+                          <ListItemIcon sx={{ minWidth: 36 }}>
+                            <SearchIcon fontSize="small" />
+                          </ListItemIcon>
+                          <ListItemText primary={suggestion} />
+                        </ListItemButton>
+                      </ListItem>
+                    ))}
+                  </List>
+                </Paper>
+              )}
             </Box>
 
             {/* Notifications */}
@@ -379,7 +480,33 @@ function AppLayout() {
       >
         <Container maxWidth="xl">
           <Typography variant="body2" color="text.secondary" align="center">
-            © 2025 UPKIIP. All rights reserved. | Privacy Policy | Terms of Service | GDPR/POPIA Compliance
+            © 2025 UPKIIP. All rights reserved. |{' '}
+            <Typography
+              component="span"
+              variant="body2"
+              sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}
+              onClick={() => navigate('/privacy-policy')}
+            >
+              Privacy Policy
+            </Typography>
+            {' | '}
+            <Typography
+              component="span"
+              variant="body2"
+              sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}
+              onClick={() => navigate('/terms-of-service')}
+            >
+              Terms of Service
+            </Typography>
+            {' | '}
+            <Typography
+              component="span"
+              variant="body2"
+              sx={{ cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}
+              onClick={() => navigate('/compliance')}
+            >
+              GDPR/POPIA Compliance
+            </Typography>
           </Typography>
         </Container>
       </Box>

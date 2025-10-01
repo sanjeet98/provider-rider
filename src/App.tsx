@@ -35,6 +35,14 @@ import InsuranceAnalytics from './pages/insurance/Analytics';
 import InsuranceSupport from './pages/insurance/Support';
 import InsuranceProfile from './pages/insurance/Profile';
 
+// Legal Pages
+import PrivacyPolicy from './pages/legal/PrivacyPolicy';
+import TermsOfService from './pages/legal/TermsOfService';
+import Compliance from './pages/legal/Compliance';
+
+// Search
+import SearchResults from './pages/SearchResults';
+
 function App() {
   return (
     <UserProvider>
@@ -47,6 +55,9 @@ function App() {
           <Route path="/" element={<AppLayout />}>
             {/* Default redirect to login */}
             <Route index element={<Navigate to="/login" replace />} />
+            
+            {/* Search Results */}
+            <Route path="search" element={<SearchResults />} />
             
             {/* Customer Routes */}
             <Route path="customer/home" element={<CustomerHome />} />
@@ -78,6 +89,11 @@ function App() {
             <Route path="insurance/analytics" element={<InsuranceAnalytics />} />
             <Route path="insurance/support" element={<InsuranceSupport />} />
             <Route path="insurance/profile" element={<InsuranceProfile />} />
+            
+            {/* Legal Pages */}
+            <Route path="privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="terms-of-service" element={<TermsOfService />} />
+            <Route path="compliance" element={<Compliance />} />
           </Route>
         </Routes>
       </Router>
