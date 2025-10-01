@@ -159,9 +159,18 @@ function AppLayout() {
                 textDecoration: 'none',
                 cursor: 'pointer',
               }}
-              onClick={() => navigate('/')}
+              onClick={() => {
+                // Navigate to respective portal home page based on role
+                if (role === 'customer') {
+                  navigate('/customer/home');
+                } else if (role === 'insurance') {
+                  navigate('/insurance/claims');
+                } else {
+                  navigate(`/${role}/dashboard`);
+                }
+              }}
             >
-              UNKIIP
+              UPKIIP
             </Typography>
 
             {/* Desktop Navigation */}
@@ -303,9 +312,27 @@ function AppLayout() {
       {/* Mobile Drawer */}
       <Drawer anchor="left" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
         <Box sx={{ width: 250 }} role="presentation">
-          <Box sx={{ p: 2, backgroundColor: 'primary.main', color: 'white' }}>
+          <Box 
+            sx={{ 
+              p: 2, 
+              backgroundColor: 'primary.main', 
+              color: 'white',
+              cursor: 'pointer'
+            }}
+            onClick={() => {
+              setDrawerOpen(false);
+              // Navigate to respective portal home page based on role
+              if (role === 'customer') {
+                navigate('/customer/home');
+              } else if (role === 'insurance') {
+                navigate('/insurance/claims');
+              } else {
+                navigate(`/${role}/dashboard`);
+              }
+            }}
+          >
             <Typography variant="h6" fontWeight="bold">
-              UNKIIP
+              UPKIIP
             </Typography>
             <Typography variant="caption" sx={{ textTransform: 'capitalize' }}>
               {role} Portal
@@ -349,7 +376,7 @@ function AppLayout() {
       >
         <Container maxWidth="xl">
           <Typography variant="body2" color="text.secondary" align="center">
-            © 2025 UNKIIP. All rights reserved. | Privacy Policy | Terms of Service | GDPR/POPIA Compliance
+            © 2025 UPKIIP. All rights reserved. | Privacy Policy | Terms of Service | GDPR/POPIA Compliance
           </Typography>
         </Container>
       </Box>

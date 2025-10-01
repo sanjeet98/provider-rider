@@ -2,6 +2,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import AppLayout from './layouts/AppLayout';
 import { UserProvider } from './context/UserContext';
 
+// Auth Pages
+import Login from './pages/Login';
+
 // Customer Portal Pages
 import CustomerHome from './pages/customer/Home';
 import ServiceRequest from './pages/customer/ServiceRequest';
@@ -34,9 +37,13 @@ function App() {
     <UserProvider>
       <Router>
         <Routes>
+          {/* Login Route (No Layout) */}
+          <Route path="/login" element={<Login />} />
+          
+          {/* Protected Routes (With Layout) */}
           <Route path="/" element={<AppLayout />}>
-            {/* Default redirect */}
-            <Route index element={<Navigate to="/customer/home" replace />} />
+            {/* Default redirect to login */}
+            <Route index element={<Navigate to="/login" replace />} />
             
             {/* Customer Routes */}
             <Route path="customer/home" element={<CustomerHome />} />

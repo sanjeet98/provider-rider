@@ -147,7 +147,7 @@ function CustomerSupport() {
                     Phone Support
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    +1 (800) 555-UNKIIP
+                    +1 (800) 555-UPKIIP
                   </Typography>
                   <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
                     Mon-Fri: 8AM - 8PM EST
@@ -163,7 +163,7 @@ function CustomerSupport() {
                     Email Support
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    support@unkiip.com
+                    support@upkiip.com
                   </Typography>
                   <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
                     Response within 24 hours

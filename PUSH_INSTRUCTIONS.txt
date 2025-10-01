@@ -1,0 +1,17 @@
+GitHub Push Instructions
+========================
+
+Run this command in your terminal:
+
+cd /Users/sanjeetkaul/CascadeProjects/UNKIIP
+git push -u origin main
+
+When prompted:
+- Username: sanjeet98
+- Password: [PASTE YOUR TOKEN HERE - NOT YOUR GITHUB PASSWORD]
+
+The token should look like: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+After successful push, you can delete this file.
+
+Repository URL: https://github.com/sanjeet98/provider-rider
