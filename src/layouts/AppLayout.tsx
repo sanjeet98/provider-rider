@@ -74,6 +74,7 @@ const roleMenuItems: Record<UserRole, { label: string; path: string; icon: JSX.E
   insurance: [
     { label: 'Claims', path: '/insurance/claims', icon: <Description /> },
     { label: 'Analytics', path: '/insurance/analytics', icon: <BarChart /> },
+    { label: 'Support', path: '/insurance/support', icon: <Support /> },
   ],
 };
 
@@ -303,7 +304,9 @@ function AppLayout() {
               <MenuItem onClick={() => { handleCloseUserMenu(); navigate(`/${role}/support`); }}>
                 Support
               </MenuItem>
-              <MenuItem onClick={handleCloseUserMenu}>Logout</MenuItem>
+              <MenuItem onClick={() => { handleCloseUserMenu(); navigate('/login'); }}>
+                Logout
+              </MenuItem>
             </Menu>
           </Toolbar>
         </Container>

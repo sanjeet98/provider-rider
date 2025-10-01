@@ -27,10 +27,13 @@ import AdminDashboard from './pages/admin/Dashboard';
 import Dispatch from './pages/admin/Dispatch';
 import AdminReporting from './pages/admin/Reporting';
 import UserManagement from './pages/admin/UserManagement';
+import AdminProfile from './pages/admin/Profile';
 
 // Insurance Portal Pages
 import InsuranceClaims from './pages/insurance/Claims';
 import InsuranceAnalytics from './pages/insurance/Analytics';
+import InsuranceSupport from './pages/insurance/Support';
+import InsuranceProfile from './pages/insurance/Profile';
 
 function App() {
   return (
@@ -67,11 +70,14 @@ function App() {
             <Route path="admin/dispatch" element={<Dispatch />} />
             <Route path="admin/reporting" element={<AdminReporting />} />
             <Route path="admin/users" element={<UserManagement />} />
+            <Route path="admin/profile" element={<AdminProfile />} />
             
             {/* Insurance Routes */}
             <Route path="insurance/dashboard" element={<Navigate to="/insurance/claims" replace />} />
             <Route path="insurance/claims" element={<InsuranceClaims />} />
             <Route path="insurance/analytics" element={<InsuranceAnalytics />} />
+            <Route path="insurance/support" element={<InsuranceSupport />} />
+            <Route path="insurance/profile" element={<InsuranceProfile />} />
           </Route>
         </Routes>
       </Router>
